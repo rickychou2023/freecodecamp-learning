@@ -7,7 +7,7 @@ This is a repository of my learning at FreeCodeCamp😎.
 # Curriculums
 
 1. JavaScript Algorithms and Data Structures
-2. [Data Visualization](./curricula_md/02-data-visualization/table-of-contents.md)
+2. [Data Visualization](./curricula_toc/02-data-visualization/table-of-contents.md)
 
 # Learning Engish
 

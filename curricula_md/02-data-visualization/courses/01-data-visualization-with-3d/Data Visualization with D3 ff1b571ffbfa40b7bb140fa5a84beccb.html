@@ -1,0 +1,769 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Data Visualization with D3</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="ff1b571f-fbfa-40b7-bb14-0fa5a84beccb" class="page sans"><header><h1 class="page-title"><strong><strong>Data Visualization with D3</strong></strong></h1></header><div class="page-body"><p id="6e97c55e-34a7-46ac-947d-9aaf8c5bddca" class="">D3, or D3.js, stands for <mark class="highlight-blue"><strong><em>Data Driven Documents</em></strong></mark>. It&#x27;s a JavaScript library for creating dynamic and interactive data visualizations in the browser.</p><p id="d4c5a4fd-5daa-44d9-9663-f023f2cc51c5" class="">D3 is built to work with common web standards – namely HTML, CSS, and Scalable Vector Graphics (SVG).</p><p id="fc9eb4bf-ee81-467c-889c-9438a06cd145" class="">D3 supports many different kinds of input data formats. Then, using its powerful built-in methods, you can transform those data into different charts, graphs, and maps.</p><p id="5d32fbf1-b6ec-4ab3-8b25-a3527845f8cc" class="">In the Data Visualization with D3 courses, you&#x27;ll learn how to work with data to create different charts, graphs, hover elements, and other ingredients to create dynamic and attractive data visualizations.</p><p id="fb07e566-1f0f-458a-8e31-b099f175e52d" class="">
+</p><h1 id="8c5cc87d-a667-41b2-b071-bff4329c8012" class="">Import D3.js</h1><pre id="a9a130bd-1f1a-4839-bfaa-4157dbff75a5" class="code"><code>&lt;script type=&quot;module&quot;&gt;
+  import * as d3 from &#x27;https://cdn.jsdelivr.net/npm/d3@7/+esm&#x27;		
+&lt;/script&gt;</code></pre><h1 id="d9decaa1-5c8c-4f9f-8e17-45f9f4d56c20" class=""><strong><strong>Add Document Elements</strong></strong></h1><div id="36c800a6-6f82-44e7-ab68-ba7340af6bf3" class="column-list"><div id="503b2803-fe7c-49a9-8216-d02c6ffdc06a" style="width:62.5%" class="column"><pre id="f59e962c-9250-4fcb-85ac-87195b2ac5e3" class="code"><code>&lt;body&gt;
+&lt;/body&gt;
+&lt;script&gt;
+import * as d3 from &#x27;https://cdn.jsdelivr.net/npm/d3@7/+esm&#x27;
+
+d3.select(&quot;body&quot;)
+  .append(&quot;h2&quot;)
+  .text(&quot;Learning D3&quot;)
+&lt;/script&gt;</code></pre></div><div id="7cdcd06a-3188-488c-a0d8-c41b0c0b0400" style="width:37.5%" class="column"><figure id="c587ab48-8db5-414a-aa41-d10305d1d9e5" class="image"><a href="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled.png"><img style="width:444px" src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled.png"/></a></figure><p id="a2f11a41-9907-43ac-b216-9adea1560ee3" class="">
+</p></div></div><h1 id="c0670236-c7ac-4480-aa5f-4b1f475ed507" class=""><strong><strong>Select a Group of Elements</strong></strong></h1><pre id="a97ce2d6-f5b6-442b-a10e-e336ebcc3253" class="code"><code>d3.select(&quot;ul&quot;)
+  .selectAll(&quot;li&quot;)
+  .text(&quot;list item&quot;)</code></pre><h1 id="a7d4abe9-0b24-4ca0-b757-2cd3e30f075d" class=""><strong><strong>Work with Data</strong></strong></h1><p id="cbccbc2f-d317-410e-b567-4b8685905e91" class="">The first step is to make D3 aware of the data. The <code>data()</code> method is used on a selection of DOM elements to attach the data to those elements. The data set is passed as an argument to the method.</p><p id="4ad4d205-9bf2-4b07-ac54-c9857e20267f" class="">A common workflow pattern is to create a new element in the document for each piece of data in the set. D3 has the <code>enter()</code> method for this purpose.</p><p id="fb098c5c-536a-47ad-b75c-68e0a46c087e" class="">
+</p><div id="b034ec4e-5cb3-447d-8bd2-713d1ba2e91d" class="column-list"><div id="eda04ff9-da99-4699-9038-f3acfb97f227" style="width:68.75%" class="column"><pre id="8ccfb366-94c2-4c2c-a155-8c49daa268f5" class="code"><code>&lt;body&gt;
+  &lt;h2&gt;Existed h2&lt;/h2&gt;
+&lt;/body&gt;</code></pre><pre id="ac36ce5a-8704-4a3c-a851-45ca6ea956a1" class="code"><code>const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+d3.select(&quot;body&quot;)
+  .selectAll(&quot;h2&quot;)
+  .data(dataset)
+  .enter()
+  .append(&quot;h2&quot;)
+  .text(&quot;New Created h2&quot;)</code></pre></div><div id="713c5ddf-80b4-4f24-bc07-754f46e66b11" style="width:31.250000000000007%" class="column"><figure id="c62cd484-0dd0-497d-a606-5579d01a03d9" class="image"><a href="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%201.png"><img style="width:508px" src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%201.png"/></a></figure></div></div><p id="40360175-6334-41b7-865f-d9054b11bba1" class="">
+</p><h1 id="c2e261b5-e394-4dbe-bd02-0a9f6637dc31" class=""><strong><strong>Work with Dynamic Data</strong></strong></h1><p id="e04c098d-6138-47ea-bb25-8f25ced7efc4" class="">The D3 <code>text()</code> method can take a string or a callback function as an argument:</p><div id="0618e324-e1fc-4404-9106-326af4d44e43" class="column-list"><div id="f63b5395-c64f-4daa-83be-cb58ed395e58" style="width:81.25%" class="column"><pre id="366e3802-5f4f-469e-bca8-c5a8d36b13f1" class="code"><code>&lt;body&gt;
+&lt;/body&gt;</code></pre><pre id="7cc1b202-11ce-4a82-b60f-57d52eb8d2a9" class="code"><code>const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+d3.select(&quot;body&quot;)
+	.selectAll(&quot;h2&quot;)
+  .data(dataset)
+  .enter()
+  .append(&quot;h2&quot;)
+  .text(d =&gt; `${d} USD`);</code></pre></div><div id="6a16739a-1965-4c9b-814b-eabdc007e271" style="width:18.749999999999993%" class="column"><figure id="6de0da0f-0cf5-41d0-b373-1a10493c6628" class="image"><a href="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%202.png"><img style="width:144px" src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%202.png"/></a></figure></div></div><h1 id="c8c7db0c-2f82-42bc-bb01-7f56cb22fbe6" class=""><strong><strong>Add Inline Styling to Elements</strong></strong></h1><div id="1dafa501-edc3-430b-9585-8c9240d04a8c" class="column-list"><div id="2bc82991-84e9-4ed5-8162-540584e012d4" style="width:81.25%" class="column"><pre id="c9a21464-a7f8-48a7-87ef-5bedb343c043" class="code"><code>&lt;body&gt;
+&lt;/body&gt;</code></pre><pre id="3f98b57e-32ad-4e15-b59c-2e1300487d73" class="code"><code>const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+d3.select(&quot;body&quot;)
+	.selectAll(&quot;h2&quot;)
+  .data(dataset)
+  .enter()
+  .append(&quot;h2&quot;)
+  .text(d =&gt; `${d} USD`)
+	.style(&quot;color&quot;,&quot;red&quot;)</code></pre></div><div id="da5cd6ea-5581-4c0a-ab4f-19940141912e" style="width:18.750000000000004%" class="column"><figure id="87c929f9-0a54-48a3-8867-37277bac77d7" class="image"><a href="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%203.png"><img style="width:358px" src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%203.png"/></a></figure></div></div><h1 id="00fd8d79-893c-4c04-b34f-45813f562851" class=""><strong><strong>Change Styles Based on Data</strong></strong></h1><div id="a7b11dcc-f36a-404a-92b2-700b3972c79b" class="column-list"><div id="d5a67107-126a-46d8-88a5-9e29dc48e22f" style="width:81.25%" class="column"><pre id="d0f93fad-53ee-409a-ae75-dc6ffa23e7df" class="code"><code>&lt;body&gt;
+&lt;/body&gt;</code></pre><p id="f54ccb80-996d-4ada-860d-28f7c4c89525" class="">You can use a callback function in the <code>style()</code> method and include the conditional logic. The callback function uses the <code>d</code> parameter to represent the data point:</p><pre id="f3ce8f93-9aad-4678-a7ce-00a6c815f8a5" class="code"><code>const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+d3.select(&quot;body&quot;)
+	.selectAll(&quot;h2&quot;)
+  .data(dataset)
+  .enter()
+  .append(&quot;h2&quot;)
+  .text(d =&gt; `${d} USD`)
+	.style(&quot;color&quot;, d =&gt; d&lt;20?&quot;red&quot;:&quot;green&quot;)</code></pre></div><div id="3a7a8742-7109-4136-834f-312b09785bce" style="width:18.750000000000004%" class="column"><figure id="0338032a-d916-4dd7-bf3e-36c675d134ac" class="image"><a href="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%204.png"><img style="width:316px" src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%204.png"/></a></figure></div></div><h1 id="75aeefa4-18b0-451e-847b-c489109bb5ba" class=""><strong><strong>Add Attributes with D3</strong></strong></h1><pre id="9915a7ce-fe73-438d-94cb-70592933ef5c" class="code"><code>&lt;style&gt;
+  .bar {
+    width: 25px;
+    height: 100px;
+    display: inline-block;
+    background-color: blue;
+  }
+&lt;/style&gt;
+&lt;body&gt;
+&lt;/body&gt;</code></pre><p id="7d2ca44f-0d6d-4aef-bc07-3910d587ac6a" class="">D3 has the <code>attr()</code> method to add any HTML attribute to an element, including a class name.</p><pre id="dae798c2-63ed-4caa-8274-412032d425fb" class="code"><code>const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+d3.select(&quot;body&quot;)
+	.selectAll(&quot;div&quot;)
+	.data(dataset)
+	.enter()
+	.append(&quot;div&quot;)
+	.attr(&quot;class&quot;,&quot;bar&quot;)</code></pre><h1 id="b5ac2dd4-bd64-45f6-92e3-3ba75794d39b" class=""><strong><strong>Update the Height of an Element Dynamically</strong></strong></h1><p id="d62e0546-0fd8-4a05-9a76-58f956b9f767" class="">In this section, We can combine the previous sections to create <mark class="highlight-teal"><strong><em>a simple bar chart</em></strong></mark>. There are two steps to this:</p><ol type="1" id="c4658b7c-a992-49af-931c-7494c18c370f" class="numbered-list" start="1"><li>Create a <code>div</code> for each data point in the array</li></ol><ol type="1" id="29e4023b-12ae-4b56-81b5-2a3b11140ac9" class="numbered-list" start="2"><li>Give each <code>div</code> a dynamic height, using a callback function in the <code>style()</code> method that sets height equal to the data value</li></ol><div id="2c11fd68-7cb9-40b1-81c5-18605343104c" class="column-list"><div id="09fba361-e2c6-4788-9564-f7727f050644" style="width:50%" class="column"><pre id="87c86f54-e9ba-4803-ab1c-378579f7aadd" class="code"><code>&lt;style&gt;
+  .bar {
+    width: 25px;
+    display: inline-block;
+    background-color: blue;
+  }
+&lt;/style&gt;
+&lt;body&gt;
+&lt;/body&gt;</code></pre></div><div id="bf11d7bb-a4f8-40d2-99e8-9d39b0f548ce" style="width:50%" class="column"><figure id="92f5e3aa-f129-4348-b82d-feecd13f18bb" class="image"><a href="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%205.png"><img style="width:542px" src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%205.png"/></a></figure></div></div><pre id="6cf4ec5b-7144-45f0-994a-19340d3b518f" class="code"><code>const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+d3.select(&quot;body&quot;).selectAll(&quot;div&quot;)
+  .data(dataset)
+  .enter()
+  .append(&quot;div&quot;)
+  .attr(&quot;class&quot;, &quot;bar&quot;)
+  .style(&quot;height&quot;, d =&gt; `${d*4}px`)</code></pre><h1 id="6394de7f-fd29-426a-bd06-71c753bcf726" class=""><strong><strong>Change the Presentation of a Bar Chart</strong></strong></h1><div id="414ed733-8372-4424-8819-1bd784b67ebc" class="column-list"><div id="2720f13e-f477-45c4-a40e-99d4441d5ab8" style="width:62.5%" class="column"><pre id="11750c14-a540-46e6-9e25-15eceefb6970" class="code"><code>&lt;style&gt;
+  .bar {
+    width: 25px;
+		// add margin
+	  margin:2px;
+    display: inline-block;
+    background-color: blue;
+  }
+&lt;/style&gt;
+&lt;body&gt;
+&lt;/body&gt;</code></pre></div><div id="a6ab3ec5-6143-429b-a127-a63aac5f5266" style="width:37.5%" class="column"><figure id="f0b480b3-c340-4bc4-9b1e-d01fdccccdff" class="image"><a href="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%206.png"><img style="width:644px" src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%206.png"/></a></figure></div></div><pre id="32fa712b-afb6-4d75-82ee-dba97ae58420" class="code"><code>const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
+d3.select(&quot;body&quot;).selectAll(&quot;div&quot;)
+  .data(dataset)
+  .enter()
+  .append(&quot;div&quot;)
+  .attr(&quot;class&quot;, &quot;bar&quot;)
+	// scale the height
+  .style(&quot;height&quot;, d =&gt; `${d*10}px`)</code></pre><h1 id="e1e3390f-cff5-4de9-a6df-e9e34c869b54" class=""><strong><strong>Learn About SVG in D3</strong></strong></h1><p id="268e6bbc-272d-40e3-9a2a-f8b0416a01b4" class=""><em>SVG</em> stands for <em>Scalable Vector Graphics</em>.</p><p id="9d423c1c-afc9-4d8c-938d-7ecf6e86851a" class="">Here &quot;scalable&quot; means that, if you zoom in or out on an object, it would not appear pixelated. It scales with the display system, whether it&#x27;s on a small mobile screen or a large TV monitor.2</p><p id="2248135c-6da4-406e-b97a-ca67349cee37" class="">SVG is used to make common geometric shapes.</p><p id="6d108f84-fc4a-43c5-8c65-9511585300c0" class="">
+</p><h1 id="7203a0c8-3ae8-4825-9082-420321ad4b1c" class=""><strong><strong>Dynamically Set the Coordinates for Each Bar</strong></strong></h1><p id="6401376e-9339-4373-9a21-c8a926b9d761" class="">The last challenge created and appended a rectangle to the <code>svg</code> element for each point in <code>dataset</code> to represent a bar. Unfortunately, they were all stacked on top of each other.</p><p id="78a5d80c-2e4f-4180-b863-5551c627d33a" class="">
+</p><h1 id="e439eb2c-a441-426c-b656-ce489bec5e6b" class=""><strong><strong>Invert SVG Elements</strong></strong></h1><p id="7512a24b-be24-4995-939d-1b8887714e5d" class="">In SVG, the origin point for the coordinates is in the upper-left corner. An <code>x</code>
+ coordinate of 0 places a shape on the left edge of the SVG area. A <code>y</code>
+ coordinate of 0 places a shape on the top edge of the SVG area. Higher <code>x</code>
+ values push the rectangle to the right. Higher <code>y</code>
+ values push the rectangle down.</p><p id="64669e3f-f045-427e-8b47-1098cce2e81d" class="">To make the bars right-side-up, you need to change the way the <code>y</code> coordinate is calculated. It needs to account for both the height of the bar and the total height of the SVG area.</p><h1 id="aee90174-8942-4c0a-a7c4-c1d54dd01821" class=""><strong><strong>Add Labels to D3 Elements</strong></strong></h1><p id="4ba52ea0-e2ac-426b-a7f6-cf23c8835a33" class="">
+</p></div></article></body></html>

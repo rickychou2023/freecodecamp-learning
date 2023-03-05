@@ -1,5 +1,8 @@
 ## FreeCodeCamp_Learning
-This is a repository of my notes on learning at FreeCodeCamp.😎
+
+<div>   <a href="./README.md">English</a> |    <a href="./README.zh-CN.md">中文</a>
+
+This is a repository of my learning at FreeCodeCamp😎.
 
 # Curriculums
 
@@ -10,4 +13,3 @@ This is a repository of my notes on learning at FreeCodeCamp.😎
 
 1. To Be Categorized
 2. Symbols
-

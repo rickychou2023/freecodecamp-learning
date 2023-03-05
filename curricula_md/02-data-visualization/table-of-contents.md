@@ -1,4 +1,4 @@
-# Data visualization
+# Data Visualization
 
-[链接文本](./courses/01-data-visualization-with-3d/data-visualization-with-d3.md)
+1. [Data Visualization with 3D](./courses/01-data-visualization-with-3d/data-visualization-with-d3.md)
 

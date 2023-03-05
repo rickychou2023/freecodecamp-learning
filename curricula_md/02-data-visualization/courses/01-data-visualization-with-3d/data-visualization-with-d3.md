@@ -30,7 +30,7 @@ d3.select("body")
 </script>
 ```
 
-![Untitled](Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled.png)
+<img src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled.png" alt="Untitled" style="zoom:50%;" />
 
 # ****Select a Group of Elements****
 
@@ -62,7 +62,7 @@ d3.select("body")
   .text("New Created h2")
 ```
 
-![Untitled](Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%201.png)
+<img src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%201.png" alt="Untitled" style="zoom: 50%;" />
 
 # ****Work with Dynamic Data****
 
@@ -83,7 +83,7 @@ d3.select("body")
   .text(d => `${d} USD`);
 ```
 
-![Untitled](Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%202.png)
+<img src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%202.png" alt="Untitled" style="zoom:50%;" />
 
 # ****Add Inline Styling to Elements****
 
@@ -103,7 +103,7 @@ d3.select("body")
 	.style("color","red")
 ```
 
-![Untitled](Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%203.png)
+<img src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%203.png" alt="Untitled" style="zoom:50%;" />
 
 # ****Change Styles Based on Data****
 
@@ -125,7 +125,7 @@ d3.select("body")
 	.style("color", d => d<20?"red":"green")
 ```
 
-![Untitled](Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%204.png)
+<img src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%204.png" alt="Untitled" style="zoom:50%;" />
 
 # ****Add Attributes with D3****
 
@@ -173,7 +173,7 @@ In this section, We can combine the previous sections to create ***a simple bar 
 </body>
 ```
 
-![Untitled](Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%205.png)
+<img src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%205.png" alt="Untitled" style="zoom:50%;" />
 
 ```jsx
 const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];
@@ -201,7 +201,7 @@ d3.select("body").selectAll("div")
 </body>
 ```
 
-![Untitled](Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%206.png)
+<img src="Data%20Visualization%20with%20D3%20ff1b571ffbfa40b7bb140fa5a84beccb/Untitled%206.png" alt="Untitled" style="zoom:50%;" />
 
 ```jsx
 const dataset = [12, 31, 22, 17, 25, 18, 29, 14, 9];

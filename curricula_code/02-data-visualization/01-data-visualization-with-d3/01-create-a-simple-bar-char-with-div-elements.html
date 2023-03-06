@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Create a simple Bar Chart with div elements with D3</title>
+	<style>
+		.bar{
+			display: inline-block;
+			width:25px;
+			background-color: cyan;
+			margin: 3px;
+		}
+	</style>
+</head>
+<body>
+	<script type="module"> 
+	import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.8.2/+esm'
+
+	const dataset =[19, 23, 16, 27, 19, 10, 18, 21, 25, 14];
+	
+	d3.select("body")
+		.selectAll("div")
+		.data(dataset)
+		.enter()
+		.append("div")
+		.attr("class","bar")
+		.style("height", d => d*3+"px")
+
+	</script>
+</body>
+</html>
